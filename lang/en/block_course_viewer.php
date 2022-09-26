@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['html:addinstance'] = 'Add a new test block';
-$string['html:myaddinstance'] = 'Add a new test block to Dashboard';
-$string['newtestblock'] = '(new test block)';
-$string['pluginname'] = 'Testblock';
+$string['html:addinstance'] = 'Add a new course viewer block';
+$string['html:myaddinstance'] = 'Add a new course viewer block to Dashboard';
+$string['newcourseviewerblock'] = '(new course viewer block)';
+$string['pluginname'] = 'CourseViewerblock';
 
 $string['showcourses'] = "Show courses";
 $string['showcourses:description'] = "Shows courses instead of users";

@@ -23,7 +23,7 @@
  */
 $capabilities = array(
 
-    'block/testblock:myaddinstance' => array(
+    'block/course_viewer:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
@@ -33,7 +33,7 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
 
-    'block/testblock:addinstance' => array(
+    'block/course_viewer:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',

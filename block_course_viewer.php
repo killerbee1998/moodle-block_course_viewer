@@ -22,14 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class block_testblock extends block_base {
+class block_course_viewer extends block_base {
 
     function init() {
-        $this->title = get_string('pluginname', 'block_testblock');
-    }
-
-    function has_config(){
-        return true;
+        $this->title = get_string('pluginname', 'block_course_viewer');
     }
 
     function get_content() {
@@ -37,7 +33,7 @@ class block_testblock extends block_base {
 
 
         $content = '';
-        $showcourses = get_config('block_testblock', 'showcourses');
+        $showcourses = get_config('block_course_viewer', 'showcourses');
         
         if($showcourses){
             $courses = $DB->get_records('course');
