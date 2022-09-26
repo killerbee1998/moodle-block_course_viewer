@@ -21,28 +21,24 @@
  * @copyright  2022 Riasat Mahbub (riasat.mahbub@brainstation-23.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$capabilities = array(
 
-    'block/course_viewer:myaddinstance' => array(
+$capabilities = [
+    'block/course_viewer:myaddinstance' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
+        'archetypes' => [
             'user' => CAP_ALLOW
-        ),
-
+        ],
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
-    ),
-
-    'block/course_viewer:addinstance' => array(
+    ],
+    'block/course_viewer:addinstance' => [
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-        ),
-
+        ],
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-);
+    ],
+];

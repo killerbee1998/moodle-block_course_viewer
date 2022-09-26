@@ -29,24 +29,31 @@ class block_course_viewer extends block_base {
     }
 
     function get_content() {
-        global $DB;
-
+        global $DB, $USER;
 
         $content = '';
-        $showcourses = get_config('block_course_viewer', 'showcourses');
-        
-        if($showcourses){
+
+        if (is_siteadmin($USER->id)) {
             $courses = $DB->get_records('course');
-            foreach($courses as $course){
-                $content.= $course->fullname . "<br>";
-            }    
-        }else{
-            $teachercontext =  get_context_instance(CONTEXT_COURSE, 2);
-            $users =  get_role_users(4 , $teachercontext);
-            foreach($users as $user){
-                $content .= $user->firstname . ' ' . $user->lastname . '<br>';
+            foreach ($courses as $course) {
+                $content .= $course->fullname . "<br>";
             }
+        } else {
+            //check institution
         }
+
+        // if($showcourses){
+        // $courses = $DB->get_records('course');
+        // foreach($courses as $course){
+        //     $content.= $course->fullname . "<br>";
+        // }    
+        // }else{
+        //     $teachercontext =  get_context_instance(CONTEXT_COURSE, 2);
+        //     $users =  get_role_users(4 , $teachercontext);
+        //     foreach($users as $user){
+        //         $content .= $user->firstname . ' ' . $user->lastname . '<br>';
+        //     }
+        // }
 
 
 
@@ -57,10 +64,7 @@ class block_course_viewer extends block_base {
 
         $this->content = new stdClass;
         $this->content->text = $content;
-        $this->content->footer = 'This is the footer';
 
         return $this->content;
     }
-
-    
 }
