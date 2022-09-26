@@ -40,20 +40,23 @@ class block_course_viewer extends block_base {
             }
         } else {
 
+            $content .= "Courses Taught || Number of enrolled students<br>";
+
             foreach ($courses as $course) {
                 $context =  context_course::instance($course->id);
+
                 // check if enrolled as a teacher
                 if(is_enrolled($context, $USER->id, 'mod/assign:grade', true)){
-                    $content .= $course->fullname . "    ";
-                    $submissioncandidates = get_enrolled_users($context, 'mod/assign:viewgrades');
-                    $content .= count($submissioncandidates) . "<br>";
+                    $content .= $course->fullname . "  ||  ";
+
+                    // students cannot create resources
+                    $resource_viewers = get_enrolled_users($context, 'mod/resource:view');
+                    $resource_creators = get_enrolled_users($context, 'mod/resource:addinstance');
+
+                    $content .= count($resource_viewers)-count($resource_creators) . "<br>";
                 }
             }
         }
-
-
-
-
 
         if ($this->content !== NULL) {
             return $this->content;
