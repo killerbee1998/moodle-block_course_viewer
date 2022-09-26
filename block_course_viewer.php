@@ -32,28 +32,25 @@ class block_course_viewer extends block_base {
         global $DB, $USER;
 
         $content = '';
+        $courses = $DB->get_records('course');
 
         if (is_siteadmin($USER->id)) {
-            $courses = $DB->get_records('course');
             foreach ($courses as $course) {
                 $content .= $course->fullname . "<br>";
             }
         } else {
-            //check institution
+
+            foreach ($courses as $course) {
+                $context =  context_course::instance($course->id);
+                // check if enrolled as a teacher
+                if(is_enrolled($context, $USER->id, 'mod/assign:grade', true)){
+                    $content .= $course->fullname . "    ";
+                    $submissioncandidates = get_enrolled_users($context, 'mod/assign:viewgrades');
+                    $content .= count($submissioncandidates) . "<br>";
+                }
+            }
         }
 
-        // if($showcourses){
-        // $courses = $DB->get_records('course');
-        // foreach($courses as $course){
-        //     $content.= $course->fullname . "<br>";
-        // }    
-        // }else{
-        //     $teachercontext =  get_context_instance(CONTEXT_COURSE, 2);
-        //     $users =  get_role_users(4 , $teachercontext);
-        //     foreach($users as $user){
-        //         $content .= $user->firstname . ' ' . $user->lastname . '<br>';
-        //     }
-        // }
 
 
 
@@ -64,6 +61,7 @@ class block_course_viewer extends block_base {
 
         $this->content = new stdClass;
         $this->content->text = $content;
+        $this->content->footer = "THIS IS THE FOOTER";
 
         return $this->content;
     }
