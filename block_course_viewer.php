@@ -29,33 +29,39 @@ class block_course_viewer extends block_base {
     }
 
     function get_content() {
-        global $DB, $USER;
+        global $DB, $USER, $OUTPUT;
 
-        $content = '';
+        $content = [];
         $courses = $DB->get_records('course');
 
-        $content .= "Courses Taught || Number of enrolled students<br>";
 
         foreach ($courses as $course) {
-            
+
             $context =  context_course::instance($course->id);
             if (is_siteadmin($USER->id) || is_enrolled($context, $USER->id, 'mod/assign:grade', true)) {
-                $content .= "<a href= ". new moodle_url("/course/view.php?id=".$course->id) . "> " . $course->fullname. "</a>   ||  ";
-            
+                $course_link = new moodle_url("/course/view.php?id=".$course->id);
+
                 // students cannot create resources
                 $resource_viewers = get_enrolled_users($context, 'mod/resource:view');
                 $resource_creators = get_enrolled_users($context, 'mod/resource:addinstance');
 
-                $content .= count($resource_viewers)-count($resource_creators) . "<br>";
+                $number_enrolled = count($resource_viewers)-count($resource_creators);
+
+                array_push($content, array("course_link"=>$course_link,"fullname"=>$course->fullname, "number_enrolled"=>$number_enrolled));
             }
         }
+
+
+        $templatecontext = (object)[
+            'content' => $content
+        ];
 
         if ($this->content !== NULL) {
             return $this->content;
         }
 
         $this->content = new stdClass;
-        $this->content->text = $content;
+        $this->content->text = $OUTPUT->render_from_template('block_course_viewer/course_viewer', $templatecontext);
 
         return $this->content;
     }
