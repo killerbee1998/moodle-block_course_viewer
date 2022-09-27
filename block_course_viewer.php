@@ -34,27 +34,19 @@ class block_course_viewer extends block_base {
         $content = '';
         $courses = $DB->get_records('course');
 
-        if (is_siteadmin($USER->id)) {
-            foreach ($courses as $course) {
-                $content .= $course->fullname . "<br>";
-            }
-        } else {
+        $content .= "Courses Taught || Number of enrolled students<br>";
 
-            $content .= "Courses Taught || Number of enrolled students<br>";
+        foreach ($courses as $course) {
+            
+            $context =  context_course::instance($course->id);
+            if (is_siteadmin($USER->id) || is_enrolled($context, $USER->id, 'mod/assign:grade', true)) {
+                $content .= "<a href= ". new moodle_url("/course/view.php?id=".$course->id) . "> " . $course->fullname. "</a>   ||  ";
+            
+                // students cannot create resources
+                $resource_viewers = get_enrolled_users($context, 'mod/resource:view');
+                $resource_creators = get_enrolled_users($context, 'mod/resource:addinstance');
 
-            foreach ($courses as $course) {
-                $context =  context_course::instance($course->id);
-
-                // check if enrolled as a teacher
-                if(is_enrolled($context, $USER->id, 'mod/assign:grade', true)){
-                    $content .= new moodle_url("/course/view.php?id=".$course->id."'> ". $course->fullname ."</a>". "  ||  ");
-
-                    // students cannot create resources
-                    $resource_viewers = get_enrolled_users($context, 'mod/resource:view');
-                    $resource_creators = get_enrolled_users($context, 'mod/resource:addinstance');
-
-                    $content .= count($resource_viewers)-count($resource_creators) . "<br>";
-                }
+                $content .= count($resource_viewers)-count($resource_creators) . "<br>";
             }
         }
 
@@ -64,7 +56,6 @@ class block_course_viewer extends block_base {
 
         $this->content = new stdClass;
         $this->content->text = $content;
-        $this->content->footer = "THIS IS THE FOOTER";
 
         return $this->content;
     }
