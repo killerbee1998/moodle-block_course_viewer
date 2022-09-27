@@ -47,7 +47,7 @@ class block_course_viewer extends block_base {
 
                 // check if enrolled as a teacher
                 if(is_enrolled($context, $USER->id, 'mod/assign:grade', true)){
-                    $content .= "<a href='http://localhost/moodle/course/view.php?id=".$course->id."'> ". $course->fullname ."</a>". "  ||  ";
+                    $content .= new moodle_url("/course/view.php?id=".$course->id."'> ". $course->fullname ."</a>". "  ||  ");
 
                     // students cannot create resources
                     $resource_viewers = get_enrolled_users($context, 'mod/resource:view');
